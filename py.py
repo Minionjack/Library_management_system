@@ -1,40 +1,46 @@
 class Library:
     def __init__(self):
+        # Initialize a Library object with empty lists for items, members, and borrowings.
         self.items = []
         self.members = []
         self.borrowings = []
 
     def add_item(self, item):
+        # Add an item to the library.
         self.items.append(item)
 
     def add_member(self, member):
+        # Add a member to the library.
         self.members.append(member)
 
     def add_borrowing(self, borrowing):
+        # Add a borrowing record to the library.
         self.borrowings.append(borrowing)
 
     def remove_item(self, item):
+        # Remove an item from the library.
         self.items.remove(item)
 
     def remove_member(self, member):
+        # Remove a member from the library.
         self.members.remove(member)
 
-    def remove_borrowing(self, borrowing):
-        self.borrowings.remove(borrowing)
-
     def get_item_by_id(self, item_id):
+        # Find and return an item by its ID.
         for item in self.items:
             if item.item_id == item_id:
                 return item
         return None
 
     def get_member_by_id(self, member_id):
+        # Find and return a member by their ID.
         for member in self.members:
             if member.member_id == member_id:
                 return member
         return None
 
     def add_item_menu(self):
+        # Display the menu for adding an item.
         print("Add Item")
         item_id = input("Enter Item ID: ")
         title = input("Enter Title: ")
@@ -70,6 +76,7 @@ class Library:
             print("Invalid item type choice.")
 
     def remove_item_menu(self):
+        # Display the menu for removing an item.
         print("Remove Item")
         item_id = input("Enter Item ID: ")
         item = self.get_item_by_id(item_id)
@@ -80,6 +87,7 @@ class Library:
             print("Item not found.")
 
     def add_member_menu(self):
+        # Display the menu for adding a member.
         print("Add Member")
         member_id = input("Enter Member ID: ")
         name = input("Enter Name: ")
@@ -90,6 +98,7 @@ class Library:
         print("Member added successfully.")
 
     def remove_member_menu(self):
+        # Display the menu for removing a member.
         print("Remove Member")
         member_id = input("Enter Member ID: ")
         member = self.get_member_by_id(member_id)
@@ -100,6 +109,7 @@ class Library:
             print("Member not found.")
 
     def add_borrowing_menu(self):
+        # Display the menu for adding a borrowing record.
         print("Add Borrowing")
         borrowing_id = input("Enter Borrowing ID: ")
         member_id = input("Enter Member ID: ")
@@ -118,6 +128,7 @@ class Library:
             print("Invalid member or item.")
 
     def remove_borrowing_menu(self):
+        # Display the menu for removing a borrowing record.
         print("Remove Borrowing")
         borrowing_id = input("Enter Borrowing ID: ")
         for borrowing in self.borrowings:
@@ -128,22 +139,27 @@ class Library:
         print("Borrowing not found.")
 
     def display_items(self):
+        # Display all items in the library.
         print("Items:")
         for item in self.items:
             print(item)
 
     def display_members(self):
+        # Display all members in the library.
         print("Members:")
         for member in self.members:
             print(member)
 
     def display_borrowings(self):
+        # Display all borrowing records in the library.
         print("Borrowings:")
         for borrowing in self.borrowings:
             print(borrowing)
 
+
 class Items:
     def __init__(self, item_id, title, author, publisher, year):
+        # Initialize an item with the provided attributes.
         self.item_id = item_id
         self.title = title
         self.author = author
@@ -151,51 +167,65 @@ class Items:
         self.year = year
 
     def __str__(self):
+        # Return a string representation of the item.
         return f"{self.item_id} | {self.title} | {self.author} | {self.publisher} | {self.year}"
 
 
 class Books(Items):
     def __init__(self, item_id, title, author, publisher, year, num_pages, language):
+        # Initialize a book with additional attributes for number of pages and language.
         super().__init__(item_id, title, author, publisher, year)
         self.num_pages = num_pages
         self.language = language
 
     def __str__(self):
+        # Return a string representation of the book.
         return f"{super().__str__()} | {self.num_pages} | {self.language} | book"
+
 
 class Articles(Items):
     def __init__(self, item_id, title, author, publisher, year, journal_name, issue_number):
+        # Initialize an article with additional attributes for journal name and issue number.
         super().__init__(item_id, title, author, publisher, year)
         self.journal_name = journal_name
         self.issue_number = issue_number
 
     def __str__(self):
+        # Return a string representation of the article.
+        return f"{super().__str__()} | {self.journal_name}
+    def __str__(self):
+        # Return a string representation of the article.
         return f"{super().__str__()} | {self.journal_name} | {self.issue_number} | article"
 
 
 class DigitalMedia(Items):
     def __init__(self, item_id, title, author, publisher, year, file_format, file_size):
+        # Initialize a digital media item with additional attributes for file format and file size.
         super().__init__(item_id, title, author, publisher, year)
         self.file_format = file_format
         self.file_size = file_size
 
     def __str__(self):
+        # Return a string representation of the digital media item.
         return f"{super().__str__()} | {self.file_format} | {self.file_size} | digital media"
 
 
 class Member:
     def __init__(self, member_id, name, email, phone):
+        # Initialize a member with the provided attributes.
         self.member_id = member_id
         self.name = name
         self.email = email
         self.phone = phone
 
     def __str__(self):
+        # Return a string representation of the member.
         return f"{self.member_id} | {self.name} | {self.email} | {self.phone}"
 
 
 class Borrowing:
     def __init__(self, borrowing_id, member, item, start_date, end_date):
+        # Initialize a borrowing record with the provided attributes.
         self.borrowing_id = borrowing_id
         self.member = member
         self.item = item
@@ -203,10 +233,9 @@ class Borrowing:
         self.end_date = end_date
 
     def __str__(self):
-        return f"{self.borrowing_id} | {self.member.member_id} | {self.item.item_id} | {self.start_date} | {self.end_date}"
+        # Return a string representation of the borrowing record.
+        return f"{self.borrowing_id} | {self.member.name} | {self.item.title} | {self.start_date} - {self.end_date}"
 
-
-# Create an instance of the library
 library = Library()
 
 # Load items
