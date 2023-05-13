@@ -25,6 +25,10 @@ class Library:
         # Remove a member from the library.
         self.members.remove(member)
 
+    def remove_borrowing(self, borrowing):
+        # Remove a borrowing from the library
+        self.borrowings.remove(borrowing)
+
     def get_item_by_id(self, item_id):
         # Find and return an item by its ID.
         for item in self.items:
@@ -192,11 +196,7 @@ class Articles(Items):
 
     def __str__(self):
         # Return a string representation of the article.
-        return f"{super().__str__()} | {self.journal_name}
-    def __str__(self):
-        # Return a string representation of the article.
-        return f"{super().__str__()} | {self.journal_name} | {self.issue_number} | article"
-
+        return f"{super().__str__()} | {self.journal_name}"
 
 class DigitalMedia(Items):
     def __init__(self, item_id, title, author, publisher, year, file_format, file_size):
@@ -209,7 +209,6 @@ class DigitalMedia(Items):
         # Return a string representation of the digital media item.
         return f"{super().__str__()} | {self.file_format} | {self.file_size} | digital media"
 
-
 class Member:
     def __init__(self, member_id, name, email, phone):
         # Initialize a member with the provided attributes.
@@ -221,7 +220,6 @@ class Member:
     def __str__(self):
         # Return a string representation of the member.
         return f"{self.member_id} | {self.name} | {self.email} | {self.phone}"
-
 
 class Borrowing:
     def __init__(self, borrowing_id, member, item, start_date, end_date):
@@ -311,3 +309,5 @@ while True:
         break
     else:
         print("Invalid choice. Please try again.")
+
+        
