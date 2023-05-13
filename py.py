@@ -25,6 +25,10 @@ class Library:
         # Remove a member from the library.
         self.members.remove(member)
 
+    def remove_borrowing(self, borrowing):
+        # Remove a borrowing from the library
+        self.borrowings.remove(borrowing)
+
     def get_item_by_id(self, item_id):
         # Find and return an item by its ID.
         for item in self.items:
@@ -38,6 +42,36 @@ class Library:
             if member.member_id == member_id:
                 return member
         return None
+
+
+    def write_items_to_file(self, file_name):
+        with open(file_name, 'w') as f:
+            for item in self.items:
+                if isinstance(item, Books):
+                    item_type = "book"
+                    extra_info = f"{item.num_pages}|{item.language}"
+                elif isinstance(item, Articles):
+                    item_type = "article"
+                    extra_info = f"{item.journal_name}|{item.issue_number}"
+                elif isinstance(item, DigitalMedia):
+                    item_type = "digital_media"
+                    extra_info = f"{item.file_format}|{item.file_size}"
+                else:
+                    continue
+                line = f"{item.item_id}|{item_type}|{item.title}|{item.author}|{item.publisher}|{item.year}|{extra_info}\n"
+                f.write(line)
+
+    def write_members_to_file(self, file_name):
+        with open(file_name, 'w') as f:
+            for member in self.members:
+                line = f"{member.member_id}|{member.name}|{member.email}|{member.phone}\n"
+                f.write(line)
+
+    def write_borrowings_to_file(self, file_name):
+        with open(file_name, 'w') as f:
+            for borrowing in self.borrowings:
+                line = f"{borrowing.borrowing_id}|{borrowing.member.member_id}|{borrowing.item.item_id}|{borrowing.start_date}|{borrowing.end_date}\n"
+                f.write(line)
 
     def add_item_menu(self):
         # Display the menu for adding an item.
@@ -84,7 +118,7 @@ class Library:
             self.remove_item(item)
             print("Item removed successfully.")
         else:
-            print("Item not found.")
+            print('Item not found: ')
 
     def add_member_menu(self):
         # Display the menu for adding a member.
@@ -192,11 +226,7 @@ class Articles(Items):
 
     def __str__(self):
         # Return a string representation of the article.
-        return f"{super().__str__()} | {self.journal_name}
-    def __str__(self):
-        # Return a string representation of the article.
-        return f"{super().__str__()} | {self.journal_name} | {self.issue_number} | article"
-
+        return f"{super().__str__()} | {self.journal_name}"
 
 class DigitalMedia(Items):
     def __init__(self, item_id, title, author, publisher, year, file_format, file_size):
@@ -209,7 +239,6 @@ class DigitalMedia(Items):
         # Return a string representation of the digital media item.
         return f"{super().__str__()} | {self.file_format} | {self.file_size} | digital media"
 
-
 class Member:
     def __init__(self, member_id, name, email, phone):
         # Initialize a member with the provided attributes.
@@ -221,7 +250,6 @@ class Member:
     def __str__(self):
         # Return a string representation of the member.
         return f"{self.member_id} | {self.name} | {self.email} | {self.phone}"
-
 
 class Borrowing:
     def __init__(self, borrowing_id, member, item, start_date, end_date):
@@ -290,16 +318,22 @@ while True:
 
     if choice == "1":
         library.add_item_menu()
+        library.write_items_to_file("items.txt")
     elif choice == "2":
         library.remove_item_menu()
+        library.write_items_to_file("items.txt")
     elif choice == "3":
         library.add_member_menu()
+        library.write_members_to_file("members.txt")
     elif choice == "4":
         library.remove_member_menu()
+        library.write_members_to_file("members.txt")
     elif choice == "5":
         library.add_borrowing_menu()
+        library.write_borrowings_to_file('borrowing.txt')
     elif choice == "6":
         library.remove_borrowing_menu()
+        library.write_borrowings_to_file('borrowing.txt')
     elif choice == "7":
         library.display_items()
     elif choice == "8":
@@ -308,6 +342,7 @@ while True:
         library.display_borrowings()
     elif choice == "0":
         print("Exiting...")
+
         break
     else:
         print("Invalid choice. Please try again.")
